@@ -1,0 +1,30 @@
+$blue-lighter: #f6f9ff;
+
+$blue-dark: #4f5975;
+$blue: #465888;
+$blue-light: #dee9f6;
+$white-lighter: #f8f9ff;
+$blue-darker: #323232;
+$orange-dark: #e58a00;
+$blue-white: #f0f2fa;
+$gray: #ced2d885;
+
+$orange: #eec289;
+
+$error: hsla(0, 84%, 64%, 1);
+
+@mixin general-colors {
+  color: $blue-darker;
+}
+
+:export {
+  blueDarker: $blue-darker;
+  blueDark: $blue-dark;
+  blue: $blue;
+  blueLight: $blue-light;
+  blueLighter: $blue-lighter;
+  error: $error;
+  blueWhite: $blue-white;
+  whiteLighter: $white-lighter;
+  gray: $gray;
+}

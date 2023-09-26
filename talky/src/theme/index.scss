@@ -1,0 +1,81 @@
+@use "./theme" as *;
+
+@include css-reset;
+
+@font-face {
+  font-family: "Noto Sans Hebrew";
+  src: url("/fonts/NotoSansHebrew/NotoSansHebrew-Regular.ttf") format("truetype");
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+}
+
+#root {
+  height: 100%;
+  font-family: "Noto Sans Hebrew", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+*[data-hidden="all"] {
+  display: none !important;
+}
+
+@media (max-width: $bp-mobile) {
+  *[data-hidden="mobile"] {
+    display: none !important;
+  }
+}
+
+@media (min-width: $bp-mobile) {
+  *[data-hidden="desktop"] {
+    display: none !important;
+  }
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+figure {
+  margin: 0;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(1px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-2px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(2px, 0, 0);
+  }
+}
