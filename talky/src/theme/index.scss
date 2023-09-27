@@ -12,12 +12,6 @@ body {
   height: 100vh;
 }
 
-#root {
-  height: 100%;
-  font-family: "Noto Sans Hebrew", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-}
-
 h1,
 h2,
 h3,
@@ -55,27 +49,4 @@ figure {
 
 a:hover {
   cursor: pointer;
-}
-
-@keyframes shake {
-  10%,
-  90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-
-  20%,
-  80% {
-    transform: translate3d(1px, 0, 0);
-  }
-
-  30%,
-  50%,
-  70% {
-    transform: translate3d(-2px, 0, 0);
-  }
-
-  40%,
-  60% {
-    transform: translate3d(2px, 0, 0);
-  }
 }

@@ -1,0 +1,36 @@
+@use "../../theme/theme" as *;
+
+$footer-height: 2rem;
+$header-height: 3rem;
+
+.container {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  & > header {
+    height: $header-height;
+    background-color: $blue-white;
+    border-bottom: 1px solid $blue-light;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  & > main {
+    flex: 1;
+    height: calc(100% - #{$footer-height} - #{$header-height});
+    width: 100%;
+    max-width: 1000px;
+    padding-block: 1rem;
+    margin-inline: auto;
+  }
+
+  & > footer {
+    margin-top: auto;
+    height: 2rem;
+    width: 100%;
+  }
+
+  background-color: lighten($blue-white, 5);
+}

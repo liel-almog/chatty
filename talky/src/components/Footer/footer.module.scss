@@ -1,0 +1,53 @@
+@use "../../theme/theme" as *;
+
+.container {
+  color: $blue-white;
+  background-color: $blue-darker;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  span:not(.dot) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding-inline: 1rem;
+  }
+
+  span[role="environment"] {
+    color: $blue-white;
+    background-color: $error;
+  }
+
+  @media (max-width: 768px) {
+    justify-content: center;
+    span {
+      width: 100%;
+    }
+    span:not([role="environment"]) {
+      display: none;
+    }
+  }
+}
+
+.dot {
+  height: 0.5rem;
+  width: 0.5rem;
+  border-radius: 50%;
+  background-color: $blue-white;
+  animation: blink 1s ease infinite;
+  margin-left: 0.5rem;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

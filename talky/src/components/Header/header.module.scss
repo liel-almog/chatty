@@ -1,0 +1,43 @@
+@use "../../theme/theme" as *;
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 1rem;
+  & > h1 {
+    font-weight: 600;
+    font-size: 1rem;
+    color: $blue-dark;
+  }
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  & > span {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: $blue-dark;
+  }
+  & > button {
+    transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+    padding: {
+      inline: 1rem;
+      block: 0.2rem;
+    }
+    border: 1px solid darken($blue-light, 5);
+    border-radius: 0.2rem;
+
+    &:hover {
+      background-color: darken($blue-light, 2);
+      box-shadow: 0 0 0.5rem rgba(darken($blue-light, 5), 0.4);
+    }
+
+    &:active {
+      background-color: darken($blue-light, 10);
+      box-shadow: none;
+    }
+  }
+}
