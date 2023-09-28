@@ -6,11 +6,18 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
-var addr = ":8080"
+const addr = ":8080"
 
 func main() {
+
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	flag.Parse()
 	hub := newHub()
 	go hub.run()
@@ -23,9 +30,8 @@ func main() {
 	}
 
 	fmt.Println("Server strating on port", addr)
-	err := server.ListenAndServe()
-	if err != nil {
+
+	if err := server.ListenAndServe(); err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
-
 }
