@@ -6,9 +6,9 @@ $header-height: 3rem;
 .container {
   height: 100%;
   width: 100%;
-
   display: flex;
   flex-direction: column;
+
   & > header {
     height: $header-height;
     background-color: $blue-white;
@@ -18,12 +18,12 @@ $header-height: 3rem;
   }
 
   & > main {
-    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     height: calc(100% - #{$footer-height} - #{$header-height});
     width: 100%;
-    max-width: 1000px;
     padding-block: 1rem;
-    margin-inline: auto;
   }
 
   & > footer {

@@ -1,0 +1,71 @@
+@use "../../theme/theme" as *;
+
+.container {
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid $gray;
+  height: 100%;
+  border-radius: 0.5rem;
+  box-shadow: inset 0 0.75rem 0.5rem -0.25rem rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  background-color: $blue-white;
+  padding: 0.75rem;
+  // Apply only on the top left and top right corners - to match the container border radius
+  border-radius: 0.5rem 0.5rem 0 0;
+  text-align: center;
+  border-bottom: 1px solid $gray;
+
+  h1 {
+    font-size: 1.5em;
+  }
+}
+
+.messages {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex-grow: 1;
+
+  .message {
+    margin-bottom: 0.75rem;
+    direction: rtl;
+
+    .username {
+      font-weight: bold;
+    }
+  }
+}
+
+.input {
+  display: flex;
+  flex-grow: 0; // This will not grow
+  flex-shrink: 0; // This will not shrink
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border-top: 1px solid $gray;
+
+  textarea {
+    width: 80%;
+    padding: 0.75rem;
+    border: 1px solid $gray;
+    border-radius: 0.25rem;
+    resize: none;
+  }
+
+  button {
+    padding: 0.75rem 1.5rem;
+    background-color: $blue-white;
+    color: $blue-darker;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: darken($color: $gray, $amount: 0.01);
+    }
+  }
+}
