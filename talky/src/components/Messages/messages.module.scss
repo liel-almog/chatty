@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.messageContainer {
+  display: flex;
+  flex-direction: row;
+  direction: rtl;
+
+  .message {
+    margin-bottom: 0.75rem;
+
+    .username {
+      font-weight: bold;
+    }
+  }
+}
+
+.isMe {
+  justify-content: flex-end;
+}

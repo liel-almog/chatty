@@ -23,21 +23,6 @@
   }
 }
 
-.messages {
-  padding: 1.5rem;
-  overflow-y: auto;
-  flex-grow: 1;
-
-  .message {
-    margin-bottom: 0.75rem;
-    direction: rtl;
-
-    .username {
-      font-weight: bold;
-    }
-  }
-}
-
 .input {
   display: flex;
   flex-grow: 0; // This will not grow
