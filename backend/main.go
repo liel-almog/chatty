@@ -1,31 +1,33 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
 const addr = ":8080"
 
 func main() {
+	r := gin.Default()
 
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
-	flag.Parse()
 	hub := newHub()
 	go hub.run()
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		serveWs(hub, w, r)
+	r.GET("/", func(c *gin.Context) {
+		serveWs(hub, c)
 	})
+
 	server := &http.Server{
 		Addr:              addr,
+		Handler:           r,
 		ReadHeaderTimeout: 3 * time.Second,
 	}
 
