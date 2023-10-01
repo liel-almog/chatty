@@ -6,20 +6,14 @@ export interface MessagesProps {
   messages: Message[];
 }
 
-const MessageConatiner = ({
-  message,
-  isMe,
-}: {
-  message: Message;
-  isMe: boolean;
-}) => {
+const MessageConatiner = ({ content, isMe }: Message) => {
   return (
     <article
       className={clsx(classes.messageContainer, { [classes.isMe]: isMe })}
     >
       <div className={classes.message}>
         <span className={classes.username}>A User</span>
-        <p>{message.content}</p>
+        <p>{content}</p>
       </div>
     </article>
   );
@@ -27,13 +21,7 @@ const MessageConatiner = ({
 
 export const Messages = ({ messages }: MessagesProps) => {
   const messagesElems = messages.map((message) => {
-    return (
-      <MessageConatiner
-        message={message}
-        isMe={true}
-        key={crypto.randomUUID()}
-      />
-    );
+    return <MessageConatiner {...message} key={crypto.randomUUID()} />;
   });
 
   return <main className={classes.container}>{messagesElems}</main>;
