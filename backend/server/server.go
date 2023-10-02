@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -9,10 +10,12 @@ import (
 
 const addr = ":8080"
 
-func Init() {
+var server *http.Server
+
+func Serve() {
 	r := newRouter()
 
-	server := &http.Server{
+	server = &http.Server{
 		Addr:              addr,
 		Handler:           r,
 		ReadHeaderTimeout: 3 * time.Second,
@@ -23,4 +26,14 @@ func Init() {
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
+}
+
+func Shutdown(ctx context.Context) error {
+	err := server.Shutdown(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
