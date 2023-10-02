@@ -17,5 +17,14 @@ func newRouter() *gin.Engine {
 		websocket.ServeWs(hub, c)
 	})
 
+	api := r.Group("/api")
+	{
+		messageGroup := api.Group("/message")
+		{
+			messageController := controllers.GetMessageController()
+			messageGroup.GET("/", messageController.GetAll)
+		}
+	}
+
 	return r
 }

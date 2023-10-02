@@ -8,7 +8,7 @@ import (
 )
 
 type PostgreSQLpgx struct {
-	pool *pgxpool.Pool
+	Pool *pgxpool.Pool
 }
 
 var db *PostgreSQLpgx
@@ -24,12 +24,12 @@ func newPostgreSQLpgx() (*PostgreSQLpgx, error) {
 	}
 
 	return &PostgreSQLpgx{
-		pool: pool,
+		Pool: pool,
 	}, nil
 }
 
 func (p *PostgreSQLpgx) Close() {
-	p.pool.Close()
+	p.Pool.Close()
 }
 
 func GetDB() *PostgreSQLpgx {

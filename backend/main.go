@@ -13,6 +13,6 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
-	server.Init()
 	database.Init()
+	server.Init()
 }
