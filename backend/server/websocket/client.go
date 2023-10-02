@@ -1,4 +1,4 @@
-package main
+package websocket
 
 import (
 	"bytes"
@@ -57,7 +57,7 @@ type Client struct {
 // reads from this goroutine.
 func (c *Client) readPump() {
 	defer func() {
-		c.hub.unregister <- c
+		c.hub.Unregister <- c
 		c.conn.Close()
 	}()
 
@@ -76,8 +76,8 @@ func (c *Client) readPump() {
 		}
 
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
-		broadcaster := Broadcaster{bytes: message, sender: c}
-		c.hub.broadcast <- &broadcaster
+		broadcaster := Broadcaster{Bytes: message, Sender: c}
+		c.hub.Broadcast <- &broadcaster
 	}
 }
 
@@ -129,7 +129,9 @@ func (c *Client) writePump() {
 }
 
 // serveWs handles websocket requests from the peer.
-func serveWs(hub *Hub, c *gin.Context) {
+func ServeWs(hub *Hub, c *gin.Context) {
+	go hub.Run()
+
 	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		log.Println(err)
@@ -137,7 +139,7 @@ func serveWs(hub *Hub, c *gin.Context) {
 	}
 
 	client := &Client{hub: hub, conn: conn, send: make(chan []byte, 256)}
-	client.hub.register <- client
+	client.hub.Register <- client
 
 	// Allow collection of memory referenced by the caller by doing all work in
 	// new goroutines.

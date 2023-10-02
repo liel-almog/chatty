@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Message, messageSchema } from "../../models/message.model";
 import classes from "./chat.module.scss";
 import { Messages } from "../../components/Messages";
@@ -8,7 +8,7 @@ export interface ChatProps {}
 export const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
-  const WS_URL = "ws://localhost:8080";
+  const WS_URL = "ws://localhost:8080/ws/chat";
   const { sendJsonMessage, lastJsonMessage } = useWebSocket(WS_URL);
 
   useEffect(() => {
