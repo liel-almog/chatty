@@ -2,6 +2,7 @@ package repository
 
 import (
 	"chatty/backend/database"
+	"chatty/backend/models"
 	"context"
 
 	"github.com/jackc/pgx/v5"
@@ -9,6 +10,7 @@ import (
 
 type MessageRepository interface {
 	FindAll() (pgx.Rows, error)
+	Save(message *models.CreateMessage) error
 }
 
 type MessageRepositoryImpl struct {
@@ -18,13 +20,25 @@ type MessageRepositoryImpl struct {
 var messageRepository *MessageRepositoryImpl
 
 func (m *MessageRepositoryImpl) FindAll() (pgx.Rows, error) {
-
 	rows, err := m.db.Pool.Query(context.Background(), "SELECT * from messages")
 	if err != nil {
 		return nil, err
 	}
 
 	return rows, nil
+}
+
+func (m *MessageRepositoryImpl) Save(message *models.CreateMessage) error {
+	_, err :=
+		m.db.Pool.Exec(context.Background(),
+			"INSERT INTO messages (room_id, content) VALUES ($1, $2)",
+			message.RoomID, message.Content)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func InitMessageRepositoryImpl() {

@@ -4,7 +4,7 @@ import "time"
 
 type Room struct {
 	ID        string    `json:"id"`
-	Name      string    `json:"name"`
+	Name      string    `json:"name" validate:"required"`
 	CreatedAt time.Time `json:"createdAt"`
 }
 

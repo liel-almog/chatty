@@ -27,7 +27,7 @@ func (m *MessageServiceImpl) GetAll() ([]models.Message, error) {
 
 	for rows.Next() {
 		var message models.Message
-		err = rows.Scan(&message.ID, &message.RoomID, &message.Content, &message.SenderID, &message.CreatedAt)
+		err = rows.Scan(&message.ID, &message.RoomID, &message.Content, &message.CreatedAt)
 		if err != nil {
 			return nil, err
 		}

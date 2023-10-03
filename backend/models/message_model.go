@@ -1,20 +1,38 @@
 package models
 
-import "time"
+import (
+	"chatty/backend/configs"
+	"encoding/json"
+	"time"
+)
 
 type Message struct {
-	ID        string    `json:"id"`
-	RoomID    string    `json:"roomId"`
-	Content   string    `json:"content"`
-	SenderID  string    `json:"senderId"`
+	ID        int       `json:"id"`
+	RoomID    int       `json:"roomId" validate:"required"`
+	Content   string    `json:"content" validate:"required,max=500"`
 	CreatedAt time.Time `json:"createdAt"`
 }
 
-func NewMessage(user_ID, room_ID, message, sender_ID string) *Message {
-	return &Message{
-		RoomID:    room_ID,
-		Content:   message,
-		SenderID:  sender_ID,
-		CreatedAt: time.Now(),
+type CreateMessage struct {
+	RoomID  int    `json:"roomId" validate:"required"`
+	Content string `json:"content" validate:"required,max=500"`
+}
+
+func (m *CreateMessage) IsValid() (bool, error) {
+	validate := configs.GetValidator()
+
+	err := validate.Struct(m)
+
+	if err != nil {
+		return false, err
 	}
+
+	return true, nil
+}
+
+func (m *CreateMessage) UnmarshalCreateMessage(data []byte) (*CreateMessage, error) {
+	message := &CreateMessage{}
+	err := json.Unmarshal(data, message)
+
+	return message, err
 }
