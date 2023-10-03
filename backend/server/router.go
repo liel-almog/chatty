@@ -27,6 +27,12 @@ func newRouter() *gin.Engine {
 				messageGroup.GET("/", messageController.GetAll)
 			}
 		}
+
+		roomGroup := api.Group("/room")
+		{
+			roomController := controllers.GetRoomController()
+			roomGroup.GET("/", roomController.GetAll)
+		}
 	}
 
 	return r

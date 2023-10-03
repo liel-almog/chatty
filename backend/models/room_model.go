@@ -3,7 +3,7 @@ package models
 import "time"
 
 type Room struct {
-	ID        string    `json:"id"`
+	ID        int       `json:"id"`
 	Name      string    `json:"name" validate:"required"`
 	CreatedAt time.Time `json:"createdAt"`
 }

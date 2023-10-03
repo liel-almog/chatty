@@ -20,7 +20,7 @@ type MessageRepositoryImpl struct {
 var messageRepository *MessageRepositoryImpl
 
 func (m *MessageRepositoryImpl) FindAll() (pgx.Rows, error) {
-	rows, err := m.db.Pool.Query(context.Background(), "SELECT * from messages")
+	rows, err := m.db.Pool.Query(context.Background(), "SELECT id, room_id, content, created_at from messages")
 	if err != nil {
 		return nil, err
 	}
