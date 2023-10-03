@@ -3,6 +3,7 @@ package websocket
 import (
 	"chatty/backend/models"
 	"chatty/backend/repository"
+	"encoding/json"
 	"fmt"
 )
 
@@ -38,8 +39,8 @@ func NewHub() *Hub {
 }
 
 func (h *Hub) processMessage(broadcaster *Broadcaster) {
-	message := &models.CreateMessageDTO{}
-	message, err := message.UnmarshalCreateMessage(broadcaster.Bytes)
+	createMessage := &models.CreateMessageDTO{}
+	createMessage, err := createMessage.UnmarshalCreateMessage(broadcaster.Bytes)
 
 	if err != nil {
 		fmt.Println("Error unmarshaling message:", err)
@@ -47,34 +48,40 @@ func (h *Hub) processMessage(broadcaster *Broadcaster) {
 	}
 
 	// Validate the message
-	if ok, err := message.IsValid(); !ok {
+	if ok, err := createMessage.IsValid(); !ok {
 		fmt.Println("Invalid message:", err)
 		return
 	}
 
 	// Save the message
 	messageRepository := repository.GetMessageRepository()
-	err = messageRepository.Save(message)
+	message, err := messageRepository.Save(createMessage)
 	if err != nil {
 		fmt.Println("Error saving message:", err)
 		return
 	}
 
 	// Broadcast the message
+	broadcaster.Bytes, err = json.Marshal(message)
+
+	if err != nil {
+		fmt.Println("Error marshaling message:", err)
+		return
+	}
+
 	h.broadcastMessage(broadcaster)
 }
 
 // Broadcast the message to all clients except the sender
 func (h *Hub) broadcastMessage(broadcaster *Broadcaster) {
 	for client := range h.Clients {
-		if client != broadcaster.Sender {
-			select {
-			case client.send <- broadcaster.Bytes:
-			default:
-				close(client.send)
-				delete(h.Clients, client)
-			}
+		select {
+		case client.send <- broadcaster.Bytes:
+		default:
+			close(client.send)
+			delete(h.Clients, client)
 		}
+
 	}
 }
 

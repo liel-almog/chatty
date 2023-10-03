@@ -1,51 +1,40 @@
 import { useEffect, useState } from "react";
-import { Message, messageSchema } from "../../models/message.model";
+import {
+  CreateMessageDto,
+  Message,
+  messageSchema,
+} from "../../models/message.model";
 import classes from "./chat.module.scss";
 import { Messages } from "../../components/Messages";
 import useWebSocket from "react-use-websocket";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChatService } from "../../services/chat.service";
 export interface ChatProps {}
 
 export const Chat = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
-
+  const queryClient = useQueryClient();
   const [newMessage, setNewMessage] = useState<string>("");
   const WS_URL = "ws://localhost:8080/ws/chat";
-  const { sendJsonMessage, lastJsonMessage } = useWebSocket(WS_URL);
+  const { sendJsonMessage, lastJsonMessage } = useWebSocket<Message>(WS_URL);
   const query = useQuery({
     queryKey: ["messages"],
     queryFn: ChatService.getChatMessages,
   });
 
   useEffect(() => {
-    if (query.data) {
-      console.log(query.data);
-      setMessages([...query.data, ...messages]);
-    }
-  }, [query.data]);
-
-  useEffect(() => {
     if (lastJsonMessage !== null) {
       const message = messageSchema.parse(lastJsonMessage);
-      setMessages((prev) => [...prev, message]);
+      queryClient.setQueryData<Message[]>(["messages"], (prev) => {
+        return [...(prev ?? []), message];
+      });
     }
-  }, [lastJsonMessage, setMessages]);
+  }, [lastJsonMessage]);
 
   // We do not use useCallback here because the wsUrl is not changing
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (newMessage) {
-      setMessages((prev) => {
-        const message: Message = {
-          content: newMessage,
-          isMe: true,
-          roomId: 1,
-        };
-
-        return [...prev, message];
-      });
-      sendJsonMessage({ content: newMessage });
+      sendJsonMessage<CreateMessageDto>({ content: newMessage, roomId: 1 });
       setNewMessage("");
     }
   };
@@ -61,7 +50,7 @@ export const Chat = () => {
       <header className={classes.header}>
         <h1>חדר צא'ט</h1>
       </header>
-      <Messages messages={messages} />
+      <Messages messages={query.data ?? []} />
       <form onSubmit={handleSubmit}>
         <section className={classes.input}>
           <input

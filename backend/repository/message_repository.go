@@ -10,7 +10,7 @@ import (
 
 type MessageRepository interface {
 	FindAll() (pgx.Rows, error)
-	Save(message *models.CreateMessageDTO) error
+	Save(message *models.CreateMessageDTO) (*models.Message, error)
 }
 
 type MessageRepositoryImpl struct {
@@ -28,17 +28,20 @@ func (m *MessageRepositoryImpl) FindAll() (pgx.Rows, error) {
 	return rows, nil
 }
 
-func (m *MessageRepositoryImpl) Save(message *models.CreateMessageDTO) error {
-	_, err :=
-		m.db.Pool.Exec(context.Background(),
-			"INSERT INTO messages (room_id, content) VALUES ($1, $2)",
-			message.RoomID, message.Content)
+func (m *MessageRepositoryImpl) Save(message *models.CreateMessageDTO) (*models.Message, error) {
+	var newMessage models.Message
+
+	err :=
+		m.db.Pool.QueryRow(context.Background(),
+			"INSERT INTO messages (room_id, content) VALUES ($1, $2) RETURNING id, room_id, content, created_at",
+			message.RoomID, message.Content,
+		).Scan(&newMessage.ID, &newMessage.RoomID, &newMessage.Content, &newMessage.CreatedAt)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return &newMessage, nil
 }
 
 func InitMessageRepositoryImpl() {

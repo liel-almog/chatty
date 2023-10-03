@@ -7,3 +7,10 @@ export const messageSchema = z.object({
 });
 
 export type Message = z.infer<typeof messageSchema>;
+
+export const createMessageSchema = messageSchema.pick({
+  content: true,
+  roomId: true,
+});
+
+export type CreateMessageDto = z.infer<typeof createMessageSchema>;
