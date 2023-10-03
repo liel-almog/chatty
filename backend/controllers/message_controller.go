@@ -27,9 +27,7 @@ func (m *MessageControllerImpl) GetAll(c *gin.Context) {
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"data": messages,
-	})
+	c.JSON(200, messages)
 }
 
 func InitMessageControllerImpl() {

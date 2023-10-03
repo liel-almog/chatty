@@ -19,10 +19,13 @@ func newRouter() *gin.Engine {
 
 	api := r.Group("/api")
 	{
-		messageGroup := api.Group("/message")
+		chatGroup := api.Group("/chat")
 		{
-			messageController := controllers.GetMessageController()
-			messageGroup.GET("/", messageController.GetAll)
+			messageGroup := chatGroup.Group("/message")
+			{
+				messageController := controllers.GetMessageController()
+				messageGroup.GET("/", messageController.GetAll)
+			}
 		}
 	}
 

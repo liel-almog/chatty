@@ -38,7 +38,7 @@ func NewHub() *Hub {
 }
 
 func (h *Hub) processMessage(broadcaster *Broadcaster) {
-	message := &models.CreateMessage{}
+	message := &models.CreateMessageDTO{}
 	message, err := message.UnmarshalCreateMessage(broadcaster.Bytes)
 
 	if err != nil {

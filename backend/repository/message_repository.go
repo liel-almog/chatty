@@ -10,7 +10,7 @@ import (
 
 type MessageRepository interface {
 	FindAll() (pgx.Rows, error)
-	Save(message *models.CreateMessage) error
+	Save(message *models.CreateMessageDTO) error
 }
 
 type MessageRepositoryImpl struct {
@@ -28,7 +28,7 @@ func (m *MessageRepositoryImpl) FindAll() (pgx.Rows, error) {
 	return rows, nil
 }
 
-func (m *MessageRepositoryImpl) Save(message *models.CreateMessage) error {
+func (m *MessageRepositoryImpl) Save(message *models.CreateMessageDTO) error {
 	_, err :=
 		m.db.Pool.Exec(context.Background(),
 			"INSERT INTO messages (room_id, content) VALUES ($1, $2)",

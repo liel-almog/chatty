@@ -13,12 +13,12 @@ type Message struct {
 	CreatedAt time.Time `json:"createdAt"`
 }
 
-type CreateMessage struct {
+type CreateMessageDTO struct {
 	RoomID  int    `json:"roomId" validate:"required"`
 	Content string `json:"content" validate:"required,max=500"`
 }
 
-func (m *CreateMessage) IsValid() (bool, error) {
+func (m *CreateMessageDTO) IsValid() (bool, error) {
 	validate := configs.GetValidator()
 
 	err := validate.Struct(m)
@@ -30,8 +30,8 @@ func (m *CreateMessage) IsValid() (bool, error) {
 	return true, nil
 }
 
-func (m *CreateMessage) UnmarshalCreateMessage(data []byte) (*CreateMessage, error) {
-	message := &CreateMessage{}
+func (m *CreateMessageDTO) UnmarshalCreateMessage(data []byte) (*CreateMessageDTO, error) {
+	message := &CreateMessageDTO{}
 	err := json.Unmarshal(data, message)
 
 	return message, err
