@@ -3,13 +3,27 @@ import { Message, messageSchema } from "../../models/message.model";
 import classes from "./chat.module.scss";
 import { Messages } from "../../components/Messages";
 import useWebSocket from "react-use-websocket";
+import { useQuery } from "@tanstack/react-query";
+import { ChatService } from "../../services/chat.service";
 export interface ChatProps {}
 
 export const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
+
   const [newMessage, setNewMessage] = useState<string>("");
   const WS_URL = "ws://localhost:8080/ws/chat";
   const { sendJsonMessage, lastJsonMessage } = useWebSocket(WS_URL);
+  const query = useQuery({
+    queryKey: ["messages"],
+    queryFn: ChatService.getChatMessages,
+  });
+
+  useEffect(() => {
+    if (query.data) {
+      console.log(query.data);
+      setMessages([...query.data, ...messages]);
+    }
+  }, [query.data]);
 
   useEffect(() => {
     if (lastJsonMessage !== null) {
@@ -26,6 +40,7 @@ export const Chat = () => {
         const message: Message = {
           content: newMessage,
           isMe: true,
+          roomId: 1,
         };
 
         return [...prev, message];

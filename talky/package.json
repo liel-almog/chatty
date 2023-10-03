@@ -13,6 +13,8 @@
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@tanstack/react-query": "^4.35.7",
+    "axios": "^1.5.1",
     "clsx": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -21,6 +23,7 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
+    "@tanstack/react-query-devtools": "^4.35.7",
     "@types/node": "^20.7.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
