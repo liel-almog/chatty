@@ -7,12 +7,12 @@ import (
 )
 
 var (
-	once     sync.Once
-	validate *validator.Validate
+	initValidatorOnce sync.Once
+	validate          *validator.Validate
 )
 
 func GetValidator() *validator.Validate {
-	once.Do(func() {
+	initValidatorOnce.Do(func() {
 		validate = validator.New()
 		// Register custom validator
 	})

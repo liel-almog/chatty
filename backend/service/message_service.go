@@ -3,20 +3,25 @@ package service
 import (
 	"chatty/backend/models"
 	"chatty/backend/repository"
+	"sync"
 )
 
 type MessageService interface {
 	// GetAll a new message
-	GetAll() ([]models.Message, error)
+	GetAll() (*[]models.Message, error)
+	Create(message *models.CreateMessageDTO) (*models.Message, error)
 }
 
 type MessageServiceImpl struct {
 	messageRepository repository.MessageRepository
 }
 
-var messageService *MessageServiceImpl
+var (
+	initRoomServiceOnce sync.Once
+	messageService      *MessageServiceImpl
+)
 
-func (m *MessageServiceImpl) GetAll() ([]models.Message, error) {
+func (m *MessageServiceImpl) GetAll() (*[]models.Message, error) {
 	rows, err := m.messageRepository.FindAll()
 	if err != nil {
 		return nil, err
@@ -39,22 +44,34 @@ func (m *MessageServiceImpl) GetAll() ([]models.Message, error) {
 		return nil, err
 	}
 
-	return messages, nil
+	return &messages, nil
 }
 
-func InitMessageServiceImpl() {
+func (m *MessageServiceImpl) Create(message *models.CreateMessageDTO) (*models.Message, error) {
+	var newMessage models.Message
+
+	row := m.messageRepository.Save(message)
+	err := row.Scan(&newMessage.ID, &newMessage.RoomID, &newMessage.Content, &newMessage.CreatedAt)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &newMessage, nil
+}
+
+func InitMessageServiceImpl() *MessageServiceImpl {
 	messageRepository := repository.GetMessageRepository()
 
-	messageService = &MessageServiceImpl{
+	return &MessageServiceImpl{
 		messageRepository: messageRepository,
 	}
 }
 
 func GetMessageService() MessageService {
-	// Check if messageService is nil
-	if messageService == nil {
-		InitMessageServiceImpl()
-	}
+	initRoomServiceOnce.Do(func() {
+		messageService = InitMessageServiceImpl()
+	})
 
 	return messageService
 }

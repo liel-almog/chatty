@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"os"
+	"sync"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -11,21 +12,22 @@ type PostgreSQLpgx struct {
 	Pool *pgxpool.Pool
 }
 
-var db *PostgreSQLpgx
+var (
+	db         *PostgreSQLpgx
+	initDBOnce sync.Once
+)
 
 func Init() {
-	db, _ = newPostgreSQLpgx()
-}
+	initDBOnce.Do(func() {
+		pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
+		if err != nil {
+			panic(err)
+		}
 
-func newPostgreSQLpgx() (*PostgreSQLpgx, error) {
-	pool, err := pgxpool.New(context.Background(), os.Getenv("DATABASE_URL"))
-	if err != nil {
-		return nil, err
-	}
-
-	return &PostgreSQLpgx{
-		Pool: pool,
-	}, nil
+		db = &PostgreSQLpgx{
+			Pool: pool,
+		}
+	})
 }
 
 func (p *PostgreSQLpgx) Close() {
@@ -33,5 +35,9 @@ func (p *PostgreSQLpgx) Close() {
 }
 
 func GetDB() *PostgreSQLpgx {
+	if db == nil {
+		Init()
+	}
+
 	return db
 }

@@ -7,7 +7,7 @@ import (
 )
 
 type RoomService interface {
-	GetAll() ([]models.Room, error)
+	GetAll() (*[]models.Room, error)
 }
 
 type RoomServiceImpl struct {
@@ -15,11 +15,11 @@ type RoomServiceImpl struct {
 }
 
 var (
-	once        sync.Once
-	roomService *RoomServiceImpl
+	initMessageServiceOnce sync.Once
+	roomService            *RoomServiceImpl
 )
 
-func (r *RoomServiceImpl) GetAll() ([]models.Room, error) {
+func (r *RoomServiceImpl) GetAll() (*[]models.Room, error) {
 	rows, err := r.roomRepository.FindAll()
 	if err != nil {
 		return nil, err
@@ -42,20 +42,20 @@ func (r *RoomServiceImpl) GetAll() ([]models.Room, error) {
 		return nil, err
 	}
 
-	return rooms, nil
+	return &rooms, nil
 }
 
-func InitRoomServiceImpl() {
+func InitRoomServiceImpl() *RoomServiceImpl {
 	roomRepository := repository.GetRoomRepository()
 
-	roomService = &RoomServiceImpl{
+	return &RoomServiceImpl{
 		roomRepository: roomRepository,
 	}
 }
 
 func GetRoomService() RoomService {
-	once.Do(func() {
-		InitRoomServiceImpl()
+	initMessageServiceOnce.Do(func() {
+		roomService = InitRoomServiceImpl()
 	})
 
 	return roomService

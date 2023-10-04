@@ -16,8 +16,8 @@ type RoomControllerImpl struct {
 }
 
 var (
-	once           sync.Once
-	roomController *RoomControllerImpl
+	initRoomControllerOnce sync.Once
+	roomController         *RoomControllerImpl
 )
 
 func (r *RoomControllerImpl) GetAll(c *gin.Context) {
@@ -42,7 +42,7 @@ func InitRoomControllerImpl() {
 }
 
 func GetRoomController() RoomController {
-	once.Do(func() {
+	initRoomControllerOnce.Do(func() {
 		InitRoomControllerImpl()
 	})
 

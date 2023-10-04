@@ -17,8 +17,8 @@ type RoomRepositoryImpl struct {
 }
 
 var (
-	once           sync.Once
-	roomRepository *RoomRepositoryImpl
+	initRoomRepositoryOnce sync.Once
+	roomRepository         *RoomRepositoryImpl
 )
 
 func (r *RoomRepositoryImpl) FindAll() (pgx.Rows, error) {
@@ -30,17 +30,17 @@ func (r *RoomRepositoryImpl) FindAll() (pgx.Rows, error) {
 	return rows, nil
 }
 
-func InitRoomRepositoryImpl() {
+func InitRoomRepositoryImpl() *RoomRepositoryImpl {
 	db := database.GetDB()
 
-	roomRepository = &RoomRepositoryImpl{
+	return &RoomRepositoryImpl{
 		db: db,
 	}
 }
 
 func GetRoomRepository() RoomRepository {
-	once.Do(func() {
-		InitRoomRepositoryImpl()
+	initRoomRepositoryOnce.Do(func() {
+		roomRepository = InitRoomRepositoryImpl()
 	})
 
 	return roomRepository

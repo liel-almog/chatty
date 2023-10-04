@@ -20,6 +20,7 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
+	// We initialize the database at the beginning of our program
 	database.Init()
 	go server.Serve()
 

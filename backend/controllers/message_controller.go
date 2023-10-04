@@ -2,12 +2,12 @@ package controllers
 
 import (
 	"chatty/backend/service"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 )
 
 type MessageController interface {
-	// GetAll a new message
 	GetAll(c *gin.Context)
 }
 
@@ -15,7 +15,10 @@ type MessageControllerImpl struct {
 	messageService service.MessageService
 }
 
-var messageController *MessageControllerImpl
+var (
+	initMessageConrollerOnce sync.Once
+	messageController        *MessageControllerImpl
+)
 
 func (m *MessageControllerImpl) GetAll(c *gin.Context) {
 	messages, err := messageController.messageService.GetAll()
@@ -30,19 +33,18 @@ func (m *MessageControllerImpl) GetAll(c *gin.Context) {
 	c.JSON(200, messages)
 }
 
-func InitMessageControllerImpl() {
+func InitMessageControllerImpl() *MessageControllerImpl {
 	messageService := service.GetMessageService()
 
-	messageController = &MessageControllerImpl{
+	return &MessageControllerImpl{
 		messageService: messageService,
 	}
 }
 
 func GetMessageController() MessageController {
-	// Check if messageController is nil
-	if messageController == nil {
-		InitMessageControllerImpl()
-	}
+	initMessageConrollerOnce.Do(func() {
+		messageController = InitMessageControllerImpl()
+	})
 
 	return messageController
 }
