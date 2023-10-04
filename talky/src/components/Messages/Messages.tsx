@@ -1,17 +1,21 @@
 import clsx from "clsx";
 import { Message } from "../../models/message.model";
 import classes from "./messages.module.scss";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
+import { UsernameContext } from "../../context/Username.context";
 
 export interface MessagesProps {
   messages: Message[];
 }
 
-const MessageConatiner = ({ content, isMe }: Message) => {
+const MessageConatiner = ({ content, username }: Message) => {
+  const { username: myUsername } = useContext(UsernameContext);
+  const isMe = username === myUsername;
+
   return (
     <li className={clsx(classes.messageContainer, { [classes.isMe]: isMe })}>
       <div className={classes.message}>
-        <h6 className={classes.username}>A User</h6>
+        <h6 className={classes.username}>{username}</h6>
         <span>{content}</span>
       </div>
     </li>

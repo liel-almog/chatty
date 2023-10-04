@@ -13,6 +13,16 @@
   display: flex;
   flex-direction: row;
 
+  &.isMe {
+    justify-content: flex-end;
+
+    .message {
+      background-color: $blue-white;
+      border-radius: 1rem 1rem 1rem 0rem;
+      border: 1px solid darken($blue-white, 10);
+    }
+  }
+
   .message {
     list-style-type: none;
     min-width: 2rem;
@@ -27,7 +37,7 @@
     padding: 1rem;
     margin-block: 0.5rem;
     min-height: 1rem;
-    border-radius: 1rem 1rem 1rem 0rem;
+    border-radius: 1rem 1rem 0rem 1rem;
     bottom: 0;
     flex-shrink: 1;
 
@@ -35,8 +45,4 @@
       font-weight: bold;
     }
   }
-}
-
-.isMe {
-  justify-content: flex-end;
 }
