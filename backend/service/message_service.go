@@ -8,7 +8,7 @@ import (
 
 type MessageService interface {
 	// GetAll a new message
-	GetAll() (*[]models.Message, error)
+	GetAllByRoom(roomID string) (*[]models.Message, error)
 	Create(message *models.CreateMessageDTO) (*models.Message, error)
 }
 
@@ -21,8 +21,8 @@ var (
 	messageService      *MessageServiceImpl
 )
 
-func (m *MessageServiceImpl) GetAll() (*[]models.Message, error) {
-	rows, err := m.messageRepository.FindAll()
+func (m *MessageServiceImpl) GetAllByRoom(roomID string) (*[]models.Message, error) {
+	rows, err := m.messageRepository.FindAllByRoom(roomID)
 	if err != nil {
 		return nil, err
 	}

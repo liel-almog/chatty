@@ -47,7 +47,7 @@ type Client struct {
 	// Buffered channel of outbound messages.
 	send chan []byte
 
-	userId string
+	userID string
 }
 
 // readPump pumps messages from the websocket connection to the hub.
@@ -68,7 +68,7 @@ func (c *Client) readPump() {
 	for {
 		_, message, err := c.conn.ReadMessage()
 		if err != nil {
-			fmt.Println("Client", c.userId, "is closing connection")
+			fmt.Println("Client", c.userID, "is closing connection")
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseNormalClosure) {
 				log.Printf("error: %v", err)
 			}

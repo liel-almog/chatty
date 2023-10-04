@@ -8,6 +8,7 @@ import (
 
 type RoomService interface {
 	GetAll() (*[]models.Room, error)
+	GetOne(roomID string) (*models.Room, error)
 }
 
 type RoomServiceImpl struct {
@@ -43,6 +44,19 @@ func (r *RoomServiceImpl) GetAll() (*[]models.Room, error) {
 	}
 
 	return &rooms, nil
+}
+
+func (r *RoomServiceImpl) GetOne(roomID string) (*models.Room, error) {
+	row := r.roomRepository.FindOne(roomID)
+
+	var room models.Room
+	err := row.Scan(&room.ID, &room.Name, &room.CreatedAt)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &room, nil
 }
 
 func InitRoomServiceImpl() *RoomServiceImpl {

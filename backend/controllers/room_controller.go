@@ -36,7 +36,28 @@ func (r *RoomControllerImpl) GetAll(c *gin.Context) {
 }
 
 func (r *RoomControllerImpl) GetAllMessagesByRoom(c *gin.Context) {
-	messages, err := r.messageService.GetAll()
+	// extract params
+	roomID := c.Param("id")
+
+	_, err := r.roomService.GetOne(roomID)
+
+	if err != nil {
+		if err.Error() == "no rows in result set" {
+			c.JSON(404, gin.H{
+				"error": "Room not found",
+			})
+
+			return
+		}
+
+		c.JSON(500, gin.H{
+			"error": err.Error(),
+		})
+
+		return
+	}
+
+	messages, err := r.messageService.GetAllByRoom(roomID)
 
 	if err != nil {
 		c.JSON(500, gin.H{

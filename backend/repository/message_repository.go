@@ -10,7 +10,7 @@ import (
 )
 
 type MessageRepository interface {
-	FindAll() (pgx.Rows, error)
+	FindAllByRoom(roomID string) (pgx.Rows, error)
 	Save(message *models.CreateMessageDTO) pgx.Row
 }
 
@@ -23,8 +23,11 @@ var (
 	messageRepository         *MessageRepositoryImpl
 )
 
-func (m *MessageRepositoryImpl) FindAll() (pgx.Rows, error) {
-	rows, err := m.db.Pool.Query(context.Background(), "SELECT id, room_id, content, created_at from messages")
+func (m *MessageRepositoryImpl) FindAllByRoom(roomID string) (pgx.Rows, error) {
+	rows, err := m.db.Pool.Query(context.Background(),
+		"SELECT id, room_id, content, created_at from messages WHERE room_id = $1 ORDER BY created_at DESC",
+		roomID)
+
 	if err != nil {
 		return nil, err
 	}

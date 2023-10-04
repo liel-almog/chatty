@@ -10,6 +10,7 @@ import (
 
 type RoomRepository interface {
 	FindAll() (pgx.Rows, error)
+	FindOne(roomID string) pgx.Row
 }
 
 type RoomRepositoryImpl struct {
@@ -28,6 +29,12 @@ func (r *RoomRepositoryImpl) FindAll() (pgx.Rows, error) {
 	}
 
 	return rows, nil
+}
+
+func (r *RoomRepositoryImpl) FindOne(roomID string) pgx.Row {
+	row := r.db.Pool.QueryRow(context.Background(), "SELECT id, name, created_at from rooms WHERE id = $1", roomID)
+
+	return row
 }
 
 func InitRoomRepositoryImpl() *RoomRepositoryImpl {
