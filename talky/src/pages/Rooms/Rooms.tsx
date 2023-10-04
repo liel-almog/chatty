@@ -14,19 +14,19 @@ export const Rooms = () => {
 
   const roomsCard = query.data?.map((room) => {
     return (
-      <article key={room.id} className={classes.item}>
-        <span>{room.name}</span>
+      <li key={room.id} className={classes.item}>
+        <span className={classes.textContent}>{room.name}</span>
         <button onClick={() => navigate(`${room.id}/chat`)}>הצטרף לחדר</button>
-      </article>
+      </li>
     );
   });
 
   return (
     <main className={classes.container}>
-      <header>
-        <h1>Chat Rooms</h1>
+      <header className={classes.header}>
+        <h2>רשימת חדרים</h2>
       </header>
-      <section className={classes.list}>{roomsCard}</section>
+      <ul className={classes.list}>{roomsCard}</ul>
     </main>
   );
 };

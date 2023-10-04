@@ -12,9 +12,9 @@ export const Chat = () => {
   return (
     <main className={classes.container}>
       <header className={classes.header}>
-        <h1>חדר צא'ט</h1>
+        <h2>חדר צא'ט</h2>
       </header>
-      {messages.length > 0 && <Messages messages={query.data ?? []} />}
+      {messages.length > 0 && <Messages messages={messages} />}
       <form className={classes.send} onSubmit={handleSubmit}>
         <input
           onChange={handleNewMessageChange}
