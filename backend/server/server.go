@@ -29,6 +29,11 @@ func Serve() {
 }
 
 func Shutdown(ctx context.Context) error {
+	for i, hub := range hubMap {
+		hub.Close()
+		delete(hubMap, i)
+	}
+
 	err := server.Shutdown(ctx)
 
 	if err != nil {

@@ -7,13 +7,24 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var hubMap map[string]*websocket.Hub
+
 func newRouter() *gin.Engine {
 	r := gin.Default()
 	health := new(controllers.HealthController)
-	hub := websocket.NewHub()
+
+	hubMap = make(map[string]*websocket.Hub)
 
 	r.GET("/health", health.Status)
-	r.GET("/ws/chat", func(c *gin.Context) {
+	r.GET("/ws/chat/:roomId", func(c *gin.Context) {
+		roomId := c.Param("roomId")
+		hub, ok := hubMap[roomId]
+
+		if !ok {
+			hub = websocket.NewHub()
+			hubMap[roomId] = hub
+		}
+
 		websocket.ServeWs(hub, c)
 	})
 

@@ -13,11 +13,13 @@ type Broadcaster struct {
 	Sender *Client
 }
 
+type ClientsMap map[*Client]bool
+
 // Hub maintains the set of active clients and broadcasts messages to the
 // clients.
 type Hub struct {
 	// Registered clients.
-	Clients map[*Client]bool
+	Clients ClientsMap
 
 	// Inbound messages from the clients.
 	Broadcast chan *Broadcaster
@@ -104,4 +106,16 @@ func (h *Hub) Run() {
 			h.processMessage(broadcaster)
 		}
 	}
+}
+
+func (h *Hub) Close() {
+	for client := range h.Clients {
+		close(client.send)
+		delete(h.Clients, client)
+		client.conn.Close()
+	}
+
+	close(h.Broadcast)
+	close(h.Register)
+	close(h.Unregister)
 }

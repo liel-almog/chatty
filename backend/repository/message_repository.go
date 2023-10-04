@@ -25,7 +25,7 @@ var (
 
 func (m *MessageRepositoryImpl) FindAllByRoom(roomID string) (pgx.Rows, error) {
 	rows, err := m.db.Pool.Query(context.Background(),
-		"SELECT id, room_id, content, created_at from messages WHERE room_id = $1 ORDER BY created_at DESC",
+		"SELECT id, room_id, content, created_at from messages WHERE room_id = $1 ORDER BY created_at ASC",
 		roomID)
 
 	if err != nil {

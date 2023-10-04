@@ -23,7 +23,7 @@ var (
 )
 
 func (r *RoomRepositoryImpl) FindAll() (pgx.Rows, error) {
-	rows, err := r.db.Pool.Query(context.Background(), "SELECT id, name, created_at from rooms")
+	rows, err := r.db.Pool.Query(context.Background(), "SELECT id, name, created_at from rooms ORDER BY created_at ASC")
 	if err != nil {
 		return nil, err
 	}
