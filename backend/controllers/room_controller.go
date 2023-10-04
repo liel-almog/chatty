@@ -9,10 +9,12 @@ import (
 
 type RoomController interface {
 	GetAll(c *gin.Context)
+	GetAllMessagesByRoom(c *gin.Context)
 }
 
 type RoomControllerImpl struct {
-	roomService service.RoomService
+	roomService    service.RoomService
+	messageService service.MessageService
 }
 
 var (
@@ -33,17 +35,32 @@ func (r *RoomControllerImpl) GetAll(c *gin.Context) {
 	c.JSON(200, rooms)
 }
 
-func InitRoomControllerImpl() {
-	roomService := service.GetRoomService()
+func (r *RoomControllerImpl) GetAllMessagesByRoom(c *gin.Context) {
+	messages, err := r.messageService.GetAll()
 
-	roomController = &RoomControllerImpl{
-		roomService: roomService,
+	if err != nil {
+		c.JSON(500, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(200, messages)
+}
+
+func InitRoomControllerImpl() *RoomControllerImpl {
+	roomService := service.GetRoomService()
+	messageService := service.GetMessageService()
+
+	return &RoomControllerImpl{
+		roomService:    roomService,
+		messageService: messageService,
 	}
 }
 
 func GetRoomController() RoomController {
 	initRoomControllerOnce.Do(func() {
-		InitRoomControllerImpl()
+		roomController = InitRoomControllerImpl()
 	})
 
 	return roomController

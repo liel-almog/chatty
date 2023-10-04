@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { Message } from "../../models/message.model";
 import classes from "./messages.module.scss";
+import { useEffect, useRef } from "react";
 
 export interface MessagesProps {
   messages: Message[];
@@ -8,21 +9,31 @@ export interface MessagesProps {
 
 const MessageConatiner = ({ content, isMe }: Message) => {
   return (
-    <article
-      className={clsx(classes.messageContainer, { [classes.isMe]: isMe })}
-    >
+    <li className={clsx(classes.messageContainer, { [classes.isMe]: isMe })}>
       <div className={classes.message}>
-        <span className={classes.username}>A User</span>
-        <p>{content}</p>
+        <h6 className={classes.username}>A User</h6>
+        <span>{content}</span>
       </div>
-    </article>
+    </li>
   );
 };
 
 export const Messages = ({ messages }: MessagesProps) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
   const messagesElems = messages.map((message) => {
-    return <MessageConatiner {...message} key={crypto.randomUUID()} />;
+    return <MessageConatiner {...message} key={message.id} />;
   });
 
-  return <main className={classes.container}>{messagesElems}</main>;
+  useEffect(() => {
+    if (scrollRef) {
+      scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
+
+  return (
+    <ul className={classes.container}>
+      {messagesElems}
+      <div ref={scrollRef} />
+    </ul>
+  );
 };
