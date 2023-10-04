@@ -13,7 +13,7 @@ export class RoomService {
   static async getChatMessages(roomId: string) {
     const rawData = (await axiosInstance.get(`${PREFIX}/${roomId}/message`))
       .data;
-    const messages = messageSchema.array().parse(rawData);
+    const messages = messageSchema.array().nullable().parse(rawData);
     return messages;
   }
 }

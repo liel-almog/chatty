@@ -11,9 +11,9 @@ import invariant from "invariant";
 import { RoomService } from "../../services/room.service";
 
 export const useChat = () => {
-  const WS_URL = "ws://localhost:8080/ws/chat";
   const { roomId } = useParams<{ roomId: string }>();
   invariant(roomId, "roomId is required");
+  const WS_URL = `ws://localhost:8080/ws/chat/${roomId}`;
 
   const { sendJsonMessage, lastJsonMessage } = useWebSocket<Message>(WS_URL);
   const [newMessage, setNewMessage] = useState<string>("");
@@ -26,7 +26,7 @@ export const useChat = () => {
   useEffect(() => {
     if (lastJsonMessage !== null) {
       const message = messageSchema.parse(lastJsonMessage);
-      queryClient.setQueryData<Message[]>([roomId], (prev) => {
+      queryClient.setQueryData<Message[]>([roomId, "messages"], (prev) => {
         return [...(prev ?? []), message];
       });
     }
