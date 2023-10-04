@@ -25,7 +25,7 @@ var (
 
 func (m *MessageRepositoryImpl) FindAllByRoom(roomID string) (pgx.Rows, error) {
 	rows, err := m.db.Pool.Query(context.Background(),
-		"SELECT id, room_id, content, created_at from messages WHERE room_id = $1 ORDER BY created_at ASC",
+		"SELECT id, room_id, content, created_at, username from messages WHERE room_id = $1 ORDER BY created_at ASC",
 		roomID)
 
 	if err != nil {
@@ -38,8 +38,8 @@ func (m *MessageRepositoryImpl) FindAllByRoom(roomID string) (pgx.Rows, error) {
 func (m *MessageRepositoryImpl) Save(message *models.CreateMessageDTO) pgx.Row {
 	row :=
 		m.db.Pool.QueryRow(context.Background(),
-			"INSERT INTO messages (room_id, content) VALUES ($1, $2) RETURNING id, room_id, content, created_at",
-			message.RoomID, message.Content,
+			"INSERT INTO messages (room_id, content, username) VALUES ($1, $2, $3) RETURNING id, room_id, content, created_at, username",
+			message.RoomID, message.Content, message.Username,
 		)
 
 	return row

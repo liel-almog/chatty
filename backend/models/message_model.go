@@ -11,11 +11,13 @@ type Message struct {
 	RoomID    int       `json:"roomId" validate:"required"`
 	Content   string    `json:"content" validate:"required,max=500"`
 	CreatedAt time.Time `json:"createdAt"`
+	Username  string    `json:"username" validate:"required,max=50"`
 }
 
 type CreateMessageDTO struct {
-	RoomID  int    `json:"roomId" validate:"required"`
-	Content string `json:"content" validate:"required,max=500"`
+	RoomID   int    `json:"roomId" validate:"required"`
+	Content  string `json:"content" validate:"required,max=500"`
+	Username string `json:"username" validate:"required,max=50"`
 }
 
 func (m *CreateMessageDTO) IsValid() (bool, error) {

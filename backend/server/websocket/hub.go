@@ -59,7 +59,7 @@ func (h *Hub) processMessage(broadcaster *Broadcaster) {
 	row := repository.GetMessageRepository().Save(createMessage)
 
 	var message models.Message
-	err = row.Scan(&message.ID, &message.RoomID, &message.Content, &message.CreatedAt)
+	err = row.Scan(&message.ID, &message.RoomID, &message.Content, &message.CreatedAt, &message.Username)
 
 	if err != nil {
 		fmt.Println("Error saving message:", err)

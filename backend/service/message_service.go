@@ -32,7 +32,7 @@ func (m *MessageServiceImpl) GetAllByRoom(roomID string) (*[]models.Message, err
 
 	for rows.Next() {
 		var message models.Message
-		err = rows.Scan(&message.ID, &message.RoomID, &message.Content, &message.CreatedAt)
+		err = rows.Scan(&message.ID, &message.RoomID, &message.Content, &message.CreatedAt, &message.Username)
 		if err != nil {
 			return nil, err
 		}
@@ -51,7 +51,7 @@ func (m *MessageServiceImpl) Create(message *models.CreateMessageDTO) (*models.M
 	var newMessage models.Message
 
 	row := m.messageRepository.Save(message)
-	err := row.Scan(&newMessage.ID, &newMessage.RoomID, &newMessage.Content, &newMessage.CreatedAt)
+	err := row.Scan(&newMessage.ID, &newMessage.RoomID, &newMessage.Content, &newMessage.CreatedAt, &newMessage.Username)
 
 	if err != nil {
 		return nil, err
