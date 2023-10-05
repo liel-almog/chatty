@@ -30,6 +30,7 @@ services:
       POSTGRES_PASSWORD: liel-almog
     volumes:
       - postgresvol:/var/lib/postgresql/data
+      - $PWD/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/ # This is where the SQL scripts are located
 
 volumes:
   postgresvol:
