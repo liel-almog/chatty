@@ -1,0 +1,35 @@
+version: "3.1"
+
+services:
+  talky:
+    build:
+      context: talky/
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres-db # Assuming the web app depends on the PostgreSQL database
+
+  backend:
+    build:
+      context: backend/
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=postgres://postgres:liel-almog@postgres-db:5432/chatty
+    depends_on:
+      - postgres-db # Assuming the web app depends on the PostgreSQL database
+
+  postgres-db:
+    image: postgres:15.4-alpine
+    container_name: postgres-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: liel-almog
+    volumes:
+      - postgresvol:/var/lib/postgresql/data
+
+volumes:
+  postgresvol:
