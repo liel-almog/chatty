@@ -6,7 +6,7 @@
 
 - [Chatty - A Live Chat Application](#chatty---a-live-chat-application)
   - [Table of Contents](#table-of-contents)
-  - [Background- \[Chatty - A Live Chat Application\]](#background--chatty---a-live-chat-application)
+  - [Background](#background)
   - [Features](#features)
     - [Easy User Identification 👤](#easy-user-identification-)
     - [Variety of Chat Rooms 🗨️](#variety-of-chat-rooms-️)
@@ -20,7 +20,7 @@
     - [Get Started with Docker 🐳](#get-started-with-docker-)
   - [License](#license)
 
-## Background- [Chatty - A Live Chat Application]
+## Background
 
 Chatty is a live chat application that enables real-time communication between users. Built with modern web technologies like Go for the backend and TypeScript for the frontend, Chatty offers a seamless chatting experience. Users can select a username, join an existing chat room, and start sending messages immediately. The application uses WebSocket protocol to provide live messaging capabilities.
 
@@ -104,4 +104,4 @@ Visit `http://localhost:8080` to access the Chatty web interface.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [MIT LICENSE](https://github.com/liel-almog/chatty/blob/main/LICENSE) file for details.
