@@ -4,12 +4,33 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-inline: 1rem;
-  & > h1 {
+  // padding-inline: 1rem;
+
+  .home {
     cursor: pointer;
-    padding: 0.5rem;
-    font-weight: 600;
-    font-size: 1rem;
-    color: $blue-dark;
+    transition: background-color 0.2s ease-in-out;
+  }
+  .home:hover {
+    background-color: darken($blue-dark, 10%);
+  }
+
+  & > div {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    background-color: $blue-dark;
+    padding-inline: 1rem;
+    & > h1 {
+      font-weight: 600;
+      font-size: 1rem;
+      color: $blue-white;
+    }
+  }
+
+  & > .username {
+    background-color: $blue-light;
+    & > h1 {
+      color: $blue-dark;
+    }
   }
 }

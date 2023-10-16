@@ -3,11 +3,11 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export interface UsernameContextProps {
   username: string;
-  setUsername: React.Dispatch<React.SetStateAction<string>>;
+  setUsername: (username: string) => void;
 }
 
 export const UsernameContext = createContext<UsernameContextProps>({
-  username: "",
+  username: "Anonymous",
   setUsername: () => {},
 });
 
@@ -16,11 +16,26 @@ export interface UsernameProviderProps {}
 export const UsernameProvider = ({
   children,
 }: PropsWithChildren<UsernameProviderProps>) => {
-  const [username, setUsername] = useLocalStorage<string>("username", "");
-  console.log({ username });
+  const [username, setUsername] = useLocalStorage<string>(
+    "username",
+    "Anonymous"
+  );
+
+  const handleSetUsername = (username: string) => {
+    if (!username) {
+      setUsername("Anonymous");
+    }
+
+    setUsername(username);
+  };
 
   return (
-    <UsernameContext.Provider value={{ username, setUsername }}>
+    <UsernameContext.Provider
+      value={{
+        username: username,
+        setUsername: handleSetUsername,
+      }}
+    >
       {children}
     </UsernameContext.Provider>
   );
