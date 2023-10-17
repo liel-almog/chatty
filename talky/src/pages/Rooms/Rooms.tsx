@@ -1,14 +1,19 @@
 import { RoomService } from "../../services/room.service";
 import classes from "./rooms.module.scss";
 import { useQuery } from "@tanstack/react-query";
-import { Chat } from "../Chat";
-import { useState } from "react";
 import clsx from "clsx";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { z } from "zod";
 
 export interface RoomsProps {}
 
 export const Rooms = () => {
-  const [roomId, setRoomId] = useState<number>();
+  const navigate = useNavigate();
+  const { roomId } = useParams();
+  const parsedRoomId = z.coerce.number().optional().safeParse(roomId);
+  if (!parsedRoomId.success) {
+    throw new Error("מזהה חדר לא תקין");
+  }
 
   const query = useQuery({
     queryKey: ["rooms"],
@@ -20,9 +25,9 @@ export const Rooms = () => {
       <li
         key={room.id}
         className={clsx(classes.item, {
-          [classes.active]: roomId === room.id,
+          [classes.active]: parsedRoomId.data === room.id,
         })}
-        onClick={() => setRoomId(room.id)}
+        onClick={() => navigate(`${room.id}/chat`)}
       >
         <span className={classes.textContent}>{room.name}</span>
       </li>
@@ -37,7 +42,7 @@ export const Rooms = () => {
         </header>
         <ul className={classes.list}>{roomsCard}</ul>
       </aside>
-      {roomId && <Chat roomId={roomId} />}
+      <Outlet />
     </>
   );
 };

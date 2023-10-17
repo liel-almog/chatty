@@ -9,20 +9,24 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { RoomService } from "../../services/room.service";
 import { UsernameContext } from "../../context/Username.context";
+import { useParams } from "react-router-dom";
+import { z } from "zod";
 
-interface UseChatProps {
-  roomId: number;
-}
+export const useChat = () => {
+  const { roomId } = useParams<{ roomId: string }>();
+  const parsedRoomId = z.coerce.number().safeParse(roomId);
+  if (!parsedRoomId.success) {
+    throw new Error("מזהה חדר לא תקין");
+  }
 
-export const useChat = ({ roomId }: UseChatProps) => {
-  const WS_URL = `ws://localhost:8080/ws/chat/${roomId}`;
+  const WS_URL = `ws://localhost:8080/ws/chat/${parsedRoomId.data}`;
   const { username } = useContext(UsernameContext);
   const { sendJsonMessage, lastJsonMessage } = useWebSocket<Message>(WS_URL);
   const [newMessage, setNewMessage] = useState<string>("");
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: [roomId, "messages"],
-    queryFn: () => RoomService.getChatMessages(roomId.toString()),
+    queryFn: () => RoomService.getChatMessages(parsedRoomId.data.toString()),
   });
 
   useEffect(() => {
@@ -40,7 +44,7 @@ export const useChat = ({ roomId }: UseChatProps) => {
       if (newMessage) {
         const rawMessage: CreateMessageDto = {
           content: newMessage,
-          roomId: roomId,
+          roomId: parsedRoomId.data,
           username: username,
         };
 

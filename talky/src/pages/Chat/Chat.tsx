@@ -4,14 +4,10 @@ import { useChat } from "./useChat";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBolt } from "@fortawesome/free-solid-svg-icons";
 
-export interface ChatProps {
-  roomId: number;
-}
+export interface ChatProps {}
 
-export const Chat = ({ roomId }: ChatProps) => {
-  const { handleNewMessageChange, handleSubmit, newMessage, query } = useChat({
-    roomId,
-  });
+export const Chat = () => {
+  const { handleNewMessageChange, handleSubmit, newMessage, query } = useChat();
   const messages = query.data ?? [];
 
   return (
@@ -19,7 +15,7 @@ export const Chat = ({ roomId }: ChatProps) => {
       <header className={classes.header}>
         <h2>חדר צא'ט</h2>
       </header>
-      {messages.length > 0 && <Messages messages={messages} roomId={roomId} />}
+      {messages.length > 0 && <Messages messages={messages} />}
       <form className={classes.send} onSubmit={handleSubmit}>
         <input
           onChange={handleNewMessageChange}

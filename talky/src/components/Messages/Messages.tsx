@@ -3,11 +3,9 @@ import { Message } from "../../models/message.model";
 import classes from "./messages.module.scss";
 import { useContext, useEffect, useRef } from "react";
 import { UsernameContext } from "../../context/Username.context";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 export interface MessagesProps {
   messages: Message[];
-  roomId: number;
 }
 
 const MessageConatiner = ({ content, username }: Message) => {
@@ -24,7 +22,7 @@ const MessageConatiner = ({ content, username }: Message) => {
   );
 };
 
-export const Messages = ({ messages, roomId }: MessagesProps) => {
+export const Messages = ({ messages }: MessagesProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const messagesElems = messages.map((message) => {
