@@ -6,7 +6,7 @@ import {
   messageSchema,
 } from "../../models/message.model";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { RoomService } from "../../services/room.service";
 import { UsernameContext } from "../../context/Username.context";
