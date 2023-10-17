@@ -2,7 +2,7 @@ package websocket
 
 import (
 	"chatty/backend/models"
-	"chatty/backend/repository"
+	"chatty/backend/service"
 	"encoding/json"
 	"fmt"
 )
@@ -56,10 +56,7 @@ func (h *Hub) processMessage(broadcaster *Broadcaster) {
 	}
 
 	// Save the message
-	row := repository.GetMessageRepository().Save(createMessage)
-
-	var message models.Message
-	err = row.Scan(&message.ID, &message.RoomID, &message.Content, &message.CreatedAt, &message.Username)
+	message, err := service.GetMessageService().Create(createMessage)
 
 	if err != nil {
 		fmt.Println("Error saving message:", err)

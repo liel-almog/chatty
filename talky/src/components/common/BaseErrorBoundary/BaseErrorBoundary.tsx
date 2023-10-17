@@ -1,6 +1,6 @@
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Component, ReactNode, ComponentType } from "react";
+import { Component, ReactNode } from "react";
 import classes from "./base-error-boundary.module.scss";
 
 interface Props {

@@ -1,6 +1,7 @@
 package server
 
 import (
+	"chatty/backend/database"
 	"context"
 	"fmt"
 	"log"
@@ -33,6 +34,8 @@ func Shutdown(ctx context.Context) error {
 		hub.Close()
 		delete(hubMap, i)
 	}
+
+	database.GetDB().Close()
 
 	err := server.Shutdown(ctx)
 
