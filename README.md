@@ -1,6 +1,6 @@
 # Chatty - A Live Chat Application
 
-![Chatty Logo](/public/chatty-logo.png =500x500)
+![Chatty Logo](https://github.com/liel-almog/chatty/blob/main/public/chatty-logo.png =500x500)
 
 ## Table of Contents
 
@@ -32,6 +32,8 @@ Upon entering Chatty, you're prompted to select a username. This name identifies
 
     Note: Your chosen username is your virtual identity in the Chatty universe, allowing for an intuitive and user-centric chat experience.
 
+![Demo Chat](https://github.com/liel-almog/chatty/blob/main/public/chatty-intro.png =800x400)
+
 ### Variety of Chat Rooms 🗨️
 
 Chatty offers a selection of predefined chat rooms, each catering to different interests and discussions. Simply choose a room and join the conversation.
@@ -43,6 +45,8 @@ Chatty offers a selection of predefined chat rooms, each catering to different i
 Thanks to the power of WebSocket technology, all messages are updated in real-time. This ensures that you're always up to date with the latest messages.
 
     Tech Highlight: WebSocket provides full-duplex communication channels over a single, long-lived connection, making your chats instantaneous and lively.
+
+![Demo Chat](https://github.com/liel-almog/chatty/blob/main/public/chatty-demo-chat.png =400x400)
 
 ## Technologies 🛠️
 
