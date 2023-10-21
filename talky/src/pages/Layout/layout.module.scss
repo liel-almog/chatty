@@ -26,6 +26,7 @@ $header-height: 3rem;
     align-items: center;
     height: calc(100% - #{$footer-height} - #{$header-height});
     padding-block: 1rem;
+    justify-content: center;
   }
 
   & > footer {
